@@ -1,5 +1,6 @@
 package com.medicine.clinic_api.controller;
 
+import com.medicine.clinic_api.dto.DoctorRequestDTO;
 import com.medicine.clinic_api.dto.DoctorResponseDTO;
 import com.medicine.clinic_api.entity.Doctor;
 import com.medicine.clinic_api.service.DoctorService;
@@ -49,5 +50,9 @@ public class DoctorController {
     @GetMapping("/specialty/{specility_id}")
     public List<Doctor> getDoctorInSpeciality(@PathVariable Integer specility_id) {
         return doctorService.getDoctorInSpeciality(specility_id);
+    }
+    @PostMapping
+    public DoctorResponseDTO createDoctor(@RequestBody DoctorRequestDTO request) {
+        return doctorService.createDoctor(request);
     }
 }

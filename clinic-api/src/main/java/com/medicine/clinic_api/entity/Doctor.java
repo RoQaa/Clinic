@@ -1,22 +1,22 @@
 package com.medicine.clinic_api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Entity
+@Builder
 @Table(name = "Doctors", schema = "dbo")
 public class Doctor {
     @Id
@@ -64,10 +64,16 @@ public class Doctor {
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+//    @Column(name = "created_at", insertable = false, updatable = false)
+//    private LocalDateTime createdAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
+
     private LocalDateTime updatedAt;
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
