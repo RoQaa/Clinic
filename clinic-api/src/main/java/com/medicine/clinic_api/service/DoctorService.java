@@ -1,7 +1,7 @@
 package com.medicine.clinic_api.service;
 
-import com.medicine.clinic_api.dto.DoctorRequestDTO;
-import com.medicine.clinic_api.dto.DoctorResponseDTO;
+import com.medicine.clinic_api.dto.request.DoctorRequestDTO;
+import com.medicine.clinic_api.dto.response.DoctorResponseDTO;
 import com.medicine.clinic_api.entity.Doctor;
 import com.medicine.clinic_api.entity.Specialty;
 import com.medicine.clinic_api.repository.DoctorRepository;

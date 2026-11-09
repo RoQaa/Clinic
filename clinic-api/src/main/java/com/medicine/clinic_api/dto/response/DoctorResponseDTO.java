@@ -1,4 +1,4 @@
-package com.medicine.clinic_api.dto;
+package com.medicine.clinic_api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

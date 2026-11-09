@@ -108,18 +108,67 @@ create table Patients(
     birth_date DATE not null,
 
     gender char(1) not null,
-    constraint check_gender check(gender in ('M','F')),
+    constraint check_gender_patient check(gender in ('M','F')),
 
     address nvarchar(250),
     blood_type varchar(3),
     emergency_contact nvarchar(20),
-    create_at DateTime2 default SYSUTCDATETIME() not null,
+    created_at DateTime2 default SYSUTCDATETIME() not null,
     updated_at DateTime2 default SYSUTCDATETIME()
 )
 alter table Patients 
 add constraint check_blood_type 
 check(blood_type in ('O-','O+','A-','A+','B-','B+','AB-','AB+'))
 
+EXEC sp_rename 'Patients.create_at', 'created_at', 'COLUMN';
+
 
 exec sp_help 'Patients'
 
+CREATE TRIGGER trg_patients_updated_at
+ON Patients
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE p
+    SET updated_at = SYSUTCDATETIME()
+    FROM Patients p
+    INNER JOIN inserted i ON p.id = i.id;
+END;
+
+CREATE TRIGGER trg_doctors_updated_at
+    ON Doctors
+    AFTER UPDATE
+AS
+BEGIN 
+    SET NOCOUNT ON;
+    UPDATE d 
+    SET updated_at = SYSUTCDATETIME()
+    FROM Doctors d
+    INNER JOIN inserted i On d.id=i.id
+   END;
+
+   INSERT INTO Patients
+(full_name, email, phone, birth_date, gender, address, blood_type, emergency_contact)
+VALUES
+(N'Ahmed Mohamed', 'ahmed@gmail.com', '01012345678', '1995-05-10', 'M', N'Cairo', 'A+', '01098765432'),
+
+(N'Mohamed Ali', 'mohamed@gmail.com', '01023456789', '1988-11-20', 'M', N'Giza', 'O+', '01087654321'),
+
+(N'Sara Ahmed', 'sara@gmail.com', '01034567890', '2000-02-15', 'F', N'Alexandria', 'B+', '01076543210'),
+
+(N'Mona Hassan', 'mona@gmail.com', '01045678901', '1975-08-25', 'F', N'Cairo', 'AB+', '01065432109'),
+
+(N'Omar Khaled', 'omar@gmail.com', '01056789012', '1992-12-05', 'M', N'Giza', 'O-', '01054321098'),
+
+(N'Nour Ibrahim', 'nour@gmail.com', '01067890123', '2003-07-18', 'F', N'Mansoura', 'A-', '01043210987'),
+
+(N'Youssef Samir', 'youssef@gmail.com', '01078901234', '1965-03-30', 'M', N'Tanta', 'B-', '01032109876'),
+
+(N'Farah Mostafa', 'farah@gmail.com', '01089012345', '1998-09-12', 'F', N'Cairo', 'AB-', '01021098765'),
+
+(N'Khaled Adel', 'khaled@gmail.com', '01090123456', '1980-01-22', 'M', N'Giza', 'A+', '01010987654'),
+
+(N'Mariam Ashraf', NULL, '01112345678', '1990-06-14', 'F', N'Alexandria', 'O+', '01198765432');

@@ -1,7 +1,7 @@
 package com.medicine.clinic_api.controller;
 
-import com.medicine.clinic_api.dto.DoctorRequestDTO;
-import com.medicine.clinic_api.dto.DoctorResponseDTO;
+import com.medicine.clinic_api.dto.request.DoctorRequestDTO;
+import com.medicine.clinic_api.dto.response.DoctorResponseDTO;
 import com.medicine.clinic_api.entity.Doctor;
 import com.medicine.clinic_api.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/doctors")
+@RequestMapping("/doctors")
 public class DoctorController {
     private final DoctorService doctorService;
 
