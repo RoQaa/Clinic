@@ -20,7 +20,7 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    //    @GetMapping
+    //  @GetMapping
 //    public List<Doctor> getAllDoctors() {
 //        return doctorService.getAllDoctors();
 //    }
@@ -29,6 +29,10 @@ public class DoctorController {
         return doctorService.getAllDoctors();
     }
 
+    @GetMapping("/{id}")
+    public Doctor getDoctorByid(@PathVariable("id") Integer id){
+        return doctorService.getDoctorById(id);
+    }
     @GetMapping("/count")
     public long getDoctorsCount() {
         return doctorService.getDoctorsCount();

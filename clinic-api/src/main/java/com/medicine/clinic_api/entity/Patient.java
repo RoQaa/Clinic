@@ -1,9 +1,7 @@
 package com.medicine.clinic_api.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,8 +12,10 @@ import java.time.LocalDateTime;
 
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
+@Builder
 @Table(name = "Patients")
 public class Patient {
     @Id

@@ -4,11 +4,13 @@ import com.medicine.clinic_api.dto.request.DoctorRequestDTO;
 import com.medicine.clinic_api.dto.response.DoctorResponseDTO;
 import com.medicine.clinic_api.entity.Doctor;
 import com.medicine.clinic_api.entity.Specialty;
+import com.medicine.clinic_api.exception.DoctorNotFoundException;
 import com.medicine.clinic_api.repository.DoctorRepository;
 import com.medicine.clinic_api.repository.SpecialtyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -75,6 +77,10 @@ public class DoctorService {
 
     public List<Doctor> getDoctorInSpeciality(Integer specility_id) {
         return doctorRepository.findAllBySpecialty_Id(specility_id);
+    }
+    public Doctor getDoctorById(Integer id){
+        Doctor doc = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found"));
+        return doc;
     }
 
 }
