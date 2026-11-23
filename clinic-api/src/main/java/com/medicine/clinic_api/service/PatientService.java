@@ -13,8 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PatientService {
     private final PatientRepository patientRepository;
@@ -41,23 +39,28 @@ public class PatientService {
             Integer page,
             Integer size,
             String sortBy,
-            String direction) {
+            String direction,
+            String gender) {
 
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Patient> result = patientRepository.findAll(pageable);
-
+        Page<Patient> result;
+        if (gender != null && !gender.isBlank()) {
+            result = patientRepository.findByGender(gender, pageable);
+        } else {
+            result = patientRepository.findAll(pageable);
+        }
         return result.map(patient -> new PatientResponseDTO(
-                                patient.getId(),
-                                patient.getFullName(),
-                                patient.getEmail(),
-                                patient.getGender(),
-                                patient.getCreatedAt()
-                        )
-                );
+                        patient.getId(),
+                        patient.getFullName(),
+                        patient.getEmail(),
+                        patient.getGender(),
+                        patient.getCreatedAt()
+                )
+        );
     }
 
     public PatientResponseDTO getPatientById(Integer id) {
@@ -137,6 +140,30 @@ public class PatientService {
         patientRepository.save(found);
 
         return new OkResponseDTO("success", "Patient updated successfully");
+    }
+
+    //TODO: check in AI
+    public Page<PatientResponseDTO> getAllPatientByBloodType(String bloodType,
+                                                             Integer page,
+                                                             Integer size,
+                                                             String sortBy,
+                                                             String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Patient> result;
+        if (bloodType != null && !bloodType.isBlank()) {
+            result = patientRepository.findByGender(bloodType, pageable);
+        } else {
+            result = patientRepository.findAll(pageable);
+        }
+        return result.map(item -> new PatientResponseDTO(item.getId(),
+                item.getFullName(),
+                item.getEmail(),
+                item.getGender(),
+                item.getCreatedAt()));
     }
 
 }

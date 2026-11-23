@@ -4,7 +4,10 @@ import com.medicine.clinic_api.dto.request.DoctorRequestDTO;
 import com.medicine.clinic_api.dto.response.DoctorResponseDTO;
 import com.medicine.clinic_api.entity.Doctor;
 import com.medicine.clinic_api.service.DoctorService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -25,8 +28,13 @@ public class DoctorController {
 //        return doctorService.getAllDoctors();
 //    }
     @GetMapping
-    public List<DoctorResponseDTO> getAllDoctors() {
-        return doctorService.getAllDoctors();
+    public Page<DoctorResponseDTO> getAllDoctors(
+            @RequestParam(defaultValue = "0") @Min(0) Integer page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) Integer size,
+            @RequestParam(defaultValue = "id") List<String> sortBy,
+            @RequestParam(defaultValue = "desc") List<String> directions
+    ) {
+        return doctorService.getAllDoctors(page, size, sortBy, directions);
     }
 
     @GetMapping("/{id}")

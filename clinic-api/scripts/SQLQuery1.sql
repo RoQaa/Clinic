@@ -172,3 +172,5 @@ VALUES
 (N'Khaled Adel', 'khaled@gmail.com', '01090123456', '1980-01-22', 'M', N'Giza', 'A+', '01010987654'),
 
 (N'Mariam Ashraf', NULL, '01112345678', '1990-06-14', 'F', N'Alexandria', 'O+', '01198765432');
+
+select * from Patients

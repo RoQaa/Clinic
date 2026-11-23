@@ -8,10 +8,14 @@ import com.medicine.clinic_api.exception.DoctorNotFoundException;
 import com.medicine.clinic_api.repository.DoctorRepository;
 import com.medicine.clinic_api.repository.SpecialtyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,18 +53,39 @@ public class DoctorService {
 
     }
 
-    public List<DoctorResponseDTO> getAllDoctors() {
+    public Page<DoctorResponseDTO> getAllDoctors(
+            Integer page,
+            Integer size,
+            List<String> sortBy,
+            List<String> directions
+    ) {
+        List<Sort.Order> orders = new ArrayList<>();
 
-        return doctorRepository.findAll()
-                .stream()
-                .map(doctor -> new DoctorResponseDTO(
-                        doctor.getId(),
-                        doctor.getFullName(),
-                        doctor.getEmail(),
-                        doctor.getSpecialty().getName(),
-                        doctor.isActive()
-                ))
-                .toList();
+        for (int i = 0; i < sortBy.size(); i++) {
+
+            String field = sortBy.get(i);
+            String direction = directions.get(i);
+
+            Sort.Order order = direction.equalsIgnoreCase("desc")
+                    ? Sort.Order.desc(field)
+                    : Sort.Order.asc(field);
+
+            orders.add(order);
+        }
+
+        Sort sort = Sort.by(orders);
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Doctor> doctors = doctorRepository.findAll(pageable);
+
+        return doctors.map(doctor -> new DoctorResponseDTO(
+                doctor.getId(),
+                doctor.getFullName(),
+                doctor.getEmail(),
+                doctor.getSpecialty().getName(),
+                doctor.isActive()
+        ));
     }
 
     public long getDoctorsCount() {
@@ -78,8 +103,9 @@ public class DoctorService {
     public List<Doctor> getDoctorInSpeciality(Integer specility_id) {
         return doctorRepository.findAllBySpecialty_Id(specility_id);
     }
-    public Doctor getDoctorById(Integer id){
-        Doctor doc = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found"));
+
+    public Doctor getDoctorById(Integer id) {
+        Doctor doc = doctorRepository.findById(id).orElseThrow(() -> new DoctorNotFoundException("Doctor not found"));
         return doc;
     }
 

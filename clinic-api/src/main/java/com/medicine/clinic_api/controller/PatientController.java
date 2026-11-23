@@ -29,9 +29,10 @@ public class PatientController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
             @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(100) Integer size,
             @RequestParam(value = "sortBy", defaultValue = "id") @Pattern(regexp = "^(id|fullName|email|gender|createdAt)$") String sortBy,
-            @RequestParam(value = "direction", defaultValue = "desc") @Pattern(regexp = "(?i)^(asc|desc)$") String direction
+            @RequestParam(value = "direction", defaultValue = "desc") @Pattern(regexp = "(?i)^(asc|desc)$") String direction,
+            @RequestParam(value = "gender",defaultValue = "") @Pattern(regexp = "(?i)^[MF]$")String gender
     ) {
-        return patientService.getAllPatients(page, size, sortBy, direction);
+        return patientService.getAllPatients(page, size, sortBy, direction,gender);
     }
 
     @GetMapping("/{id}")
