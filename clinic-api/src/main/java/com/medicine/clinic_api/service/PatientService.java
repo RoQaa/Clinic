@@ -142,7 +142,6 @@ public class PatientService {
         return new OkResponseDTO("success", "Patient updated successfully");
     }
 
-    //TODO: check in AI
     public Page<PatientResponseDTO> getAllPatientByBloodType(String bloodType,
                                                              Integer page,
                                                              Integer size,
